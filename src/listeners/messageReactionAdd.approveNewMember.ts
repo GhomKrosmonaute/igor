@@ -4,14 +4,27 @@ const listener: app.Listener<"messageReactionAdd"> = {
   event: "messageReactionAdd",
   description: "A messageReactionAdd listener",
   async run(reaction, user) {
-    if(reaction.message.id === app.rulesMessageId && reaction.emoji.id === app.rulesReactionId){
+    await reaction.fetch()
+
+    if (
+      reaction.message.channel.id === app.rulesChannelId &&
+      reaction.emoji.id === app.rulesReactionId
+    ) {
       const member = await reaction.message.guild?.members.fetch(user.id)
 
-      if(!member) return app.error(`Can't fetch ${user} member.`, "listener:approveNewMember")
+      if (!member)
+        return app.error(
+          `Can't fetch ${user} member.`,
+          "listener:approveNewMember"
+        )
 
-      return member.roles.add(app.approbationRoleId)
+      await member.roles.add(app.approbationRoleId)
+
+      return app.Log.bind({ client: this })(
+        `Igor approve new member: ${member}`
+      )
     }
-  }
+  },
 }
 
 export default listener
