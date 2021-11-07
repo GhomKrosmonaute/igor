@@ -12,8 +12,8 @@ const listener: app.Listener<"messageCreate"> = {
     if (new RegExp(`^<@!?${message.client.user.id}>$`).test(message.content))
       return message.channel.send({
         embeds: [
-          new app.MessageEmbed()
-            .setColor("BLURPLE")
+          new app.SafeMessageEmbed()
+            .setColor()
             .setDescription(`My prefix is \`${prefix}\``),
         ],
       })
@@ -162,7 +162,7 @@ const listener: app.Listener<"messageCreate"> = {
           })
         )
         .catch((error) => {
-          app.error(error, "messageCreate.native")
+          app.error(error, "messageCreate.native", true)
         })
     }
   },
