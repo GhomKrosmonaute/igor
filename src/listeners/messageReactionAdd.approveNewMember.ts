@@ -18,11 +18,21 @@ const listener: app.Listener<"messageReactionAdd"> = {
           "listener:approveNewMember"
         )
 
+      if (member.roles.cache.has(app.approbationRoleId)) return
+
       await member.roles.add(app.approbationRoleId)
 
-      return app.Log.bind({ client: this })(
-        `Igor approve new member: ${member}`
+      await app.Log.bind({ client: this })(`Igor approve new member: ${member}`)
+
+      const welcomeAttachment = await app.makeWelcomeAttachment(
+        member,
+        member.id
       )
+
+      const generalChannel = this.channels.cache.get(app.generalChannelId)
+
+      if (generalChannel?.isText())
+        return generalChannel.send({ files: [welcomeAttachment] })
     }
   },
 }

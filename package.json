@@ -28,6 +28,7 @@
   "homepage": "https://github.com/CamilleAbella/bot.ts#readme",
   "dependencies": {
     "boxen": "^6.2.1",
+    "canvas": "^2.8.0",
     "chalk": "^4.1.2",
     "csgo": "^1.5.15",
     "dayjs": "^1.10.7",
